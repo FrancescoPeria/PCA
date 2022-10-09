@@ -68,7 +68,7 @@ plt.show()
 
 print('\n', '*'*40, '\n')
 
-#%% Scalo le features per farci la PCA
+#%% I scale the features to perform the PCA
 
 import sklearn
 from sklearn.preprocessing import StandardScaler
@@ -80,7 +80,7 @@ scaler.fit(df)
 scaled_data = scaler.transform(df)
 df = pd.DataFrame(scaled_data, columns = cols)
 
-print('\nAdesso il df è standardizzato:\n', df.head())
+print('\nNow the dataframe is standardized --> mean 0 and std_dev 1:\n', df.head())
 
 print('\n', '*'*40, '\n')
 
@@ -147,24 +147,28 @@ print('\n', '*'*40, '\n')
 
 print('\n\nScree Plot to understand how much PCs will go in the final graph\n')
 
-fig, ax = plt.subplots()
+fig, ax = plt.subplots(figsize = (10, 5))
 
 axt = ax.twinx()
 
 # percentage of explained variance (lambda_k) / (lambda_1 + ... + lambda_d)
 perc_var = np.real(PCA_from_scratch.explained_variance_ratio)
-print(perc_var)
-
-labels = ['PC' + str(j) for j in range(1, len(perc_var) + 1)]
-ax.bar(labels, perc_var, color = 'dodgerblue')
-
+print('Proportion of explaine variance of each component:\n', perc_var, '\n\n')
 
 # cumulative percentage of explained variance (lambda_1 + lambda_k) / (lambda_1 + ... + lambda_d)
-cum_var = np.cumsum(perc_var) / np.sum(perc_var)
-axt.plot(labels, cum_var, color = 'blue', marker = '*')
+cum_var = np.real(PCA_from_scratch.cum_explained_variance_ratio)
+print('Proportion of explaine variance of the first k-component:\n', cum_var)
+
+labels = ['PC' + str(j) for j in range(1, len(perc_var) + 1)]
+ax.bar(labels, perc_var, color = 'black')
+
+
+
+axt.plot(labels, cum_var, color = 'red', marker = '*')
 
 ax.set_xlabel('Principal Components')
 ax.set_ylabel('% of explained variance')
+axt.set_ylabel('Cumulative % of explained variance')
 ax.set_title('Scree Plot')
 
 axt.set_ylim([0, 1.1])
@@ -268,7 +272,7 @@ print('\n', '*'*40, '\n')
 # components basis, having the principal_directions' coefficients as weights
 
 def biplot(PC, principal_directions, list_variable_names, idx_1 = 0, idx_2 = 1):
-    
+     
     # idx_1, idx_2 are indexes of the PCs to be plotted (es. PC1 and PC_3)
     
     PC_1 = PC[:, idx_1] # first principal component

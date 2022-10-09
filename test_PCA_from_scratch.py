@@ -34,7 +34,7 @@ sns.set_style('darkgrid', {'axes.facecolor': '0.9'})
 #%% Importing df
 
 
-df = pd.read_excel(r'C:\Users\peria\Desktop\DATA SCIENCE\MODELLI\PCA_Covid_Psyco_Survey.xlsx', index_col = 0)
+df = pd.read_excel(r'C:\Users\peria\Desktop\GitHub\PCA\PCA_Covid_Psyco_Survey.xlsx', index_col = 0)
 print('\n', df)
 print('\n', df.columns)
 
